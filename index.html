@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sing A New Psalm | Christian Music Streaming</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #f0eef5;
+            line-height: 1.5;
+            background: #0e0b1a;
+            min-height: 100vh;
+            transition: background-image 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        /* Overlay to keep readability */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 6, 22, 0.6); /* solid overlay, no blur */
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero .logo {
+            max-width: 550px; /* large and clear */
+            width: 100%;
+            height: auto;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e0d6ff 0%, #d4c2ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: #d5cef0;
+            font-weight: 500;
+            border-bottom: 2px solid rgba(220, 210, 255, 0.5);
+            display: inline-block;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .free-badge {
+            background: rgba(30, 20, 50, 0.7);
+            backdrop-filter: blur(4px);
+            color: #e0d6ff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 0.5rem;
+            border: 1px solid rgba(220, 200, 255, 0.3);
+        }
+
+        /* Join button */
+        .join-btn {
+            display: inline-block;
+            margin-top: 1.5rem;
+            background: rgba(125, 100, 190, 0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0.9rem 2.5rem;
+            border-radius: 40px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .join-btn:hover {
+            background: rgba(110, 85, 175, 0.95);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.5);
+        }
+
+        /* Genre Buttons */
+        .genre-selector {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .genre-btn {
+            background: rgba(20, 15, 35, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(220, 200, 255, 0.25);
+            padding: 0.7rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #d5cef0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .genre-btn:hover {
+            background: rgba(70, 55, 110, 0.8);
+            border-color: rgba(220, 200, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .genre-btn.active {
+            background: rgba(125, 100, 190, 0.9);
+            color: white;
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 8px 18px rgba(100, 70, 170, 0.4);
+        }
+
+        /* Player bar – glass morphism */
+        .music-player-bar {
+            background: rgba(18, 12, 30, 0.7);
+            backdrop-filter: blur(16px);
+            border-radius: 36px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255,255,255,0.1) inset;
+            padding: 1.2rem 2rem;
+            margin-bottom: 2.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            border: 1px solid rgba(220, 200, 255, 0.25);
+        }
+
+        .track-info {
+            flex: 2;
+            min-width: 180px;
+        }
+
+        .track-info .now-playing-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #b9adff;
+            font-weight: 600;
+        }
+
+        .track-info .current-track-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #f0ebff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .ctrl-btn {
+            background: rgba(45, 35, 70, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(220, 200, 255, 0.3);
+            width: 46px;
+            height: 46px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #d5cef0;
+            font-size: 1.2rem;
+        }
+
+        .ctrl-btn:hover {
+            background: rgba(80, 60, 120, 0.8);
+            border-color: rgba(255,255,255,0.5);
+            transform: scale(1.04);
+        }
+
+        .ctrl-btn.primary {
+            background: rgba(125, 100, 190, 0.9);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 8px 18px rgba(100, 70, 170, 0.5);
+        }
+
+        .ctrl-btn.primary:hover {
+            background: rgba(110, 85, 175, 0.95);
+        }
+
+        .progress-area {
+            flex: 3;
+            min-width: 200px;
+        }
+
+        .time-slider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #c5baff;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(200, 180, 240, 0.35);
+            border-radius: 10px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #d4c2ff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .playlist-section {
+            margin-top: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1.4rem;
+            border-left: 6px solid #b9adff;
+            padding-left: 1.2rem;
+        }
+
+        .section-header h2 {
+            font-weight: 700;
+            font-size: 1.6rem;
+            color: #f0ebff;
+        }
+
+        .song-count {
+            font-size: 0.85rem;
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-weight: 500;
+            color: #d5cef0;
+            border: 1px solid rgba(220,200,255,0.3);
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.1rem;
+        }
+
+        .song-card {
+            background: rgba(18, 12, 30, 0.65);
+            backdrop-filter: blur(14px);
+            border-radius: 26px;
+            padding: 1.1rem 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(220, 200, 255, 0.2);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .song-card:hover {
+            background: rgba(30, 20, 50, 0.75);
+            border-color: rgba(200, 170, 240, 0.5);
+            box-shadow: 0 14px 24px -8px rgba(0, 0, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .song-card.active {
+            background: rgba(70, 55, 110, 0.7);
+            border-left: 6px solid #d4c2ff;
+            border-color: rgba(180, 150, 220, 0.7);
+            box-shadow: 0 10px 22px rgba(80, 50, 140, 0.3);
+        }
+
+        .song-index {
+            font-weight: 700;
+            font-size: 1.2rem;
+            width: 42px;
+            height: 42px;
+            background: rgba(40, 30, 65, 0.7);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4c2ff;
+            border: 1px solid rgba(220,200,255,0.3);
+        }
+
+        .song-details {
+            flex: 1;
+        }
+
+        .song-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f0ebff;
+        }
+
+        .play-icon {
+            color: #b9adff;
+            font-size: 1.3rem;
+            opacity: 0.7;
+        }
+
+        .song-card:hover .play-icon {
+            opacity: 1;
+        }
+
+        /* Footer glass style */
+        .footer-content {
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #d5cef0;
+            background: rgba(8, 6, 18, 0.45);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            padding: 1.8rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin: 0.5rem 0;
+        }
+
+        .footer-content a {
+            color: #e0d6ff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-highlight {
+            background: rgba(40, 30, 65, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            padding: 1.2rem 1.6rem;
+            margin: 1.5rem auto;
+            max-width: 600px;
+            font-weight: 600;
+            border: 1px solid rgba(200, 170, 240, 0.35);
+        }
+
+        footer {
+            margin-top: 3.5rem;
+            border-top: 1px solid rgba(200, 180, 240, 0.25);
+            padding-top: 2.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 720px) {
+            .app {
+                padding: 1rem;
+            }
+            .music-player-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .progress-area {
+                width: 100%;
+            }
+            .hero .logo {
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="hero">
+        <!-- Logo kept large -->
+        <img src="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" alt="Sing A New Psalm Logo" class="logo">
+        <h1>🎵 Sing A New Psalm</h1>
+        <div class="tagline">Christian Music Streaming — Worship that moves heaven</div>
+        <div class="free-badge">✝️ Spirit‑led worship✝️</div>
+        <!-- Join The Open Church Project button -->
+        <div>
+            <a href="https://www.theopenchurchproject.org" target="_blank" rel="noopener" class="join-btn">Join The Open Church Project</a>
+        </div>
+    </div>
+
+    <!-- Genre buttons -->
+    <div class="genre-selector" id="genreSelector">
+        <button class="genre-btn active" data-genre="christianRock">Energy</button>
+        <button class="genre-btn" data-genre="rap">Rap</button>
+        <button class="genre-btn" data-genre="gospel">Gospel</button>
+        <button class="genre-btn" data-genre="contemporary">Contemporary</button>
+        <button class="genre-btn" data-genre="energy">Rock</button>
+        <button class="genre-btn" data-genre="sermons">Sermons</button>
+        <button class="genre-btn" data-genre="psalms">Psalms</button>
+    </div>
+
+    <!-- Global player bar -->
+    <div class="music-player-bar" id="playerBar">
+        <div class="track-info">
+            <div class="now-playing-label">🎧 NOW PLAYING</div>
+            <div class="current-track-title" id="currentTrackLabel">Holy Spirit Radiance x Heaven's Thunder (Mashup)</div>
+        </div>
+        <div class="player-controls">
+            <button class="ctrl-btn" id="prevBtn" aria-label="Previous">⏮️</button>
+            <button class="ctrl-btn primary" id="playPauseBtn" aria-label="Play/Pause">▶️</button>
+            <button class="ctrl-btn" id="nextBtn" aria-label="Next">⏭️</button>
+        </div>
+        <div class="progress-area">
+            <div class="time-slider">
+                <span id="currentTime">0:00</span>
+                <input type="range" id="progressSlider" value="0" step="0.01">
+                <span id="duration">0:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Playlist section -->
+    <div class="playlist-section">
+        <div class="section-header">
+            <h2 id="playlistTitle">✝️ Energy Playlist</h2>
+            <div class="song-count" id="songCount">20 tracks</div>
+        </div>
+        <div class="songs-grid" id="playlistContainer"></div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p><strong>The Open Church Project</strong></p>
+            <p>📍 Oklahoma City, OK</p>
+            <p>📞 <a href="tel:405-355-8037">405-355-8037</a></p>
+            <p>✉️ <a href="mailto:openchurchproject1@gmail.com">openchurchproject1@gmail.com</a></p>
+            <p>🌐 <a href="https://www.theopenchurchproject.org" target="_blank" rel="noopener">www.theopenchurchproject.org</a></p>
+
+            <div class="footer-highlight">
+                <p>🙏 Over <strong>100 homeless children</strong> are currently on the homeless land form for The Open Church Project.</p>
+                <p>Your help can make an eternal difference. Visit our website and click <strong>"Get Involved"</strong> to sign up as a volunteer or start a ministry today.</p>
+            </div>
+
+            <p style="margin-top: 1.5rem; font-style: italic;">Sing A New Psalm — “He put a new song in my mouth, a hymn of praise to our God.” Psalm 40:3</p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // =================================================================
+    // 20 SONGS PER GENRE – EDIT THE 'url' OF EACH SONG WITH YOUR OWN MP3 LINKS
+    // =================================================================
+    const christianRockSongs = [
+        { title: "Polly Boy’s 24_7 Church", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Polly%20Boy%E2%80%99s%2024_7%20Church.mp3" },
+        { title: "Land for the children", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Land-for-the-Children-E-2.mp3" },
+        { title: "Evil knows it's kind", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Evil-Knows-Its-kind-E-3.mp3" },
+        { title: "From sidewalks to soil", url: "https://github.com/openchurchproject/OCP-Music/raw/main/From-Sidewalks-to-Soil-E-4.mp3" },
+        { title: "From Tents To Town", url: "https://github.com/openchurchproject/OCP-Music/raw/main/From%20Tents%20To%20Town.mp3" },
+        { title: "Dreams of a 24_7 Church", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Dreams%20of%20a%2024_7%20Church-e-6.mp3" },
+        { title: "Ten Thousand Acres", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Ten%20Thousand%20Acres%2C%20Ten%20Thousand%20Amens-e-7.mp3" },
+        { title: "Holy Spirit Radiance x Heaven's Thunder (Mashup)", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Welcome To The Open Church", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Welcome%20To%20The%20Open%20Church.mp3" },
+        { title: " Dive deeper x Your the only one, that can get it done  (Mashup)", url: "https://github.com/openchurchproject/OCP-Music/raw/main/(Audio)%20Dive%20deeper%20x%20Your%20the%20only%20one%2C%20that%20can%20get%20it%20done%20%20(Mashup).mp3" },
+        { title: "Breath of Heaven", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    const rapSongs = [
+        { title: "Land for the little ones", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Rap-1.mp3" },
+        { title: "We open", url: "https://github.com/openchurchproject/OCP-Music/raw/main/We-open-Rap-2.mp3" },
+         { title: "Saint Anthony", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Saint%20Anthony.mp3" },
+        { title: "This that open church", url: "https://github.com/openchurchproject/OCP-Music/raw/main/This-That-open-church-rap-3.mp3" }
+    ];
+
+    const gospelSongs = [
+        { title: "I saw land", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Gospel-1.mp3" },
+        { title: "Why did you sell your soul", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Why%20did%20you%20sell%20your%20soul_.mp3" },
+        { title: "Gospel Anthem 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    const contemporarySongs = [
+        { title: "Contemporary Worship 1", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Contemporary Worship 2", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Contemporary Worship 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    const energySongs = [
+        { title: "Energy Praise 1", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Energy Praise 2", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Energy Praise 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    const sermonsSongs = [
+        { title: "Open The Church 24/7", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Sermon-1.mp3" },
+        { title: "Sermon 2", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Sermon 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    const psalmsSongs = [
+        { title: "Psalm 1", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 2", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 3", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 4", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 5", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 6", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 7", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 8", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 9", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 10", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 11", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 12", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" },
+        { title: "Psalm 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
+    ];
+
+    // Only Pic 8 and Pic 14 used; Gospel gets Pic 8, Sermons gets Pic 14
+    const genreBackgrounds = {
+        christianRock: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+        rap: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-8.jpg')",
+        gospel: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-8.jpg')",
+        contemporary: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+        energy: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-8.jpg')",
+        sermons: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+        psalms: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')"
+    };
+
+    // Map genre keys to arrays and display names
+    const genreMap = {
+        christianRock: { name: "Energy", songs: christianRockSongs },
+        rap: { name: "Rap", songs: rapSongs },
+        gospel: { name: "Gospel", songs: gospelSongs },
+        contemporary: { name: "Contemporary", songs: contemporarySongs },
+        energy: { name: "Rock", songs: energySongs },
+        sermons: { name: "Sermons", songs: sermonsSongs },
+        psalms: { name: "Psalms", songs: psalmsSongs }
+    };
+
+    // -----------------------------------------------------------------
+    // Player logic
+    // -----------------------------------------------------------------
+    let currentGenre = 'christianRock';
+    let songsData = genreMap[currentGenre].songs;
+    let currentIndex = 0;
+    let isPlaying = false;
+    const audio = new Audio();
+    audio.preload = "metadata";
+
+    // DOM elements
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressSlider = document.getElementById('progressSlider');
+    const currentTimeSpan = document.getElementById('currentTime');
+    const durationSpan = document.getElementById('duration');
+    const currentTrackLabel = document.getElementById('currentTrackLabel');
+    const playlistContainer = document.getElementById('playlistContainer');
+    const playlistTitle = document.getElementById('playlistTitle');
+    const songCount = document.getElementById('songCount');
+    const genreButtons = document.querySelectorAll('.genre-btn');
+
+    function formatTime(sec) {
+        if (isNaN(sec)) return "0:00";
+        const mins = Math.floor(sec / 60);
+        const remainSec = Math.floor(sec % 60);
+        return `${mins}:${remainSec < 10 ? '0' : ''}${remainSec}`;
+    }
+
+    function loadSong(index) {
+        if (index < 0) index = 0;
+        if (index >= songsData.length) index = 0;
+        currentIndex = index;
+        const song = songsData[currentIndex];
+        audio.src = song.url;
+        audio.load();
+        currentTrackLabel.innerText = song.title;
+        updateActiveCard();
+        audio.addEventListener('loadedmetadata', function onMeta() {
+            durationSpan.innerText = formatTime(audio.duration);
+            progressSlider.max = audio.duration;
+            audio.removeEventListener('loadedmetadata', onMeta);
+        }, { once: true });
+        if (isPlaying) {
+            audio.play().catch(e => console.warn("Playback error:", e));
+        }
+    }
+
+    function togglePlayPause() {
+        if (audio.paused) {
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseBtn.innerHTML = "⏸️";
+            }).catch(err => console.warn("Autoplay blocked?", err));
+        } else {
+            audio.pause();
+            isPlaying = false;
+            playPauseBtn.innerHTML = "▶️";
+        }
+    }
+
+    function nextTrack() {
+        let next = currentIndex + 1;
+        if (next >= songsData.length) next = 0;
+        currentIndex = next;
+        loadSong(currentIndex);
+        if (isPlaying) audio.play().catch(e => console.log);
+    }
+
+    function prevTrack() {
+        let prev = currentIndex - 1;
+        if (prev < 0) prev = songsData.length - 1;
+        currentIndex = prev;
+        loadSong(currentIndex);
+        if (isPlaying) audio.play().catch(e => console.log);
+    }
+
+    function updateActiveCard() {
+        const cards = document.querySelectorAll('.song-card');
+        cards.forEach((card, idx) => {
+            if (idx === currentIndex) card.classList.add('active');
+            else card.classList.remove('active');
+        });
+    }
+
+    function renderPlaylist() {
+        playlistContainer.innerHTML = '';
+        songsData.forEach((song, idx) => {
+            const card = document.createElement('div');
+            card.className = 'song-card';
+            if (idx === currentIndex) card.classList.add('active');
+            card.innerHTML = `
+                <div class="song-index">${idx + 1}</div>
+                <div class="song-details">
+                    <div class="song-title">${escapeHtml(song.title)}</div>
+                </div>
+                <div class="play-icon">🎵</div>
+            `;
+            card.addEventListener('click', () => {
+                currentIndex = idx;
+                loadSong(currentIndex);
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        playPauseBtn.innerHTML = "⏸️";
+                    }).catch(() => {});
+                } else {
+                    isPlaying = true;
+                    playPauseBtn.innerHTML = "⏸️";
+                }
+            });
+            playlistContainer.appendChild(card);
+        });
+        playlistTitle.innerText = `✝️ ${genreMap[currentGenre].name} Playlist`;
+        songCount.innerText = `${songsData.length} tracks`;
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Switch genre + background (all buttons now have a background)
+    function switchGenre(genreKey) {
+        if (genreKey === currentGenre) return;
+        currentGenre = genreKey;
+        songsData = genreMap[genreKey].songs;
+        document.body.style.backgroundImage = genreBackgrounds[genreKey];
+        currentIndex = 0;
+        audio.pause();
+        const wasPlaying = isPlaying;
+        isPlaying = false;
+        playPauseBtn.innerHTML = "▶️";
+        loadSong(0);
+        if (wasPlaying) {
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseBtn.innerHTML = "⏸️";
+            }).catch(() => {});
+        }
+        renderPlaylist();
+        genreButtons.forEach(btn => {
+            const btnGenre = btn.getAttribute('data-genre');
+            if (btnGenre === genreKey) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Bind genre buttons
+    genreButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const genre = this.getAttribute('data-genre');
+            switchGenre(genre);
+        });
+    });
+
+    // Audio events
+    audio.addEventListener('timeupdate', () => {
+        if (audio.duration && !isNaN(audio.duration)) {
+            progressSlider.value = audio.currentTime;
+            currentTimeSpan.innerText = formatTime(audio.currentTime);
+        }
+    });
+    audio.addEventListener('ended', () => {
+        nextTrack();
+    });
+    progressSlider.addEventListener('input', (e) => {
+        if (audio.duration) {
+            audio.currentTime = parseFloat(e.target.value);
+        }
+    });
+
+    // Initial background
+    document.body.style.backgroundImage = genreBackgrounds[currentGenre];
+
+    // Initial load
+    loadSong(0);
+    renderPlaylist();
+    audio.pause();
+    isPlaying = false;
+    playPauseBtn.innerHTML = "▶️";
+    audio.volume = 0.8;
+
+    playPauseBtn.addEventListener('click', togglePlayPause);
+    prevBtn.addEventListener('click', prevTrack);
+    nextBtn.addEventListener('click', nextTrack);
+</script>
+</body>
+</html>
