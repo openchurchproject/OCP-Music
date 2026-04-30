@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Sing A New Psalm | Christian Music Streaming</title>
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
@@ -27,7 +26,6 @@
             position: relative;
         }
 
-        /* Overlay to keep readability */
         body::before {
             content: "";
             position: fixed;
@@ -35,7 +33,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 6, 22, 0.6); /* solid overlay, no blur */
+            background: rgba(8, 6, 22, 0.6);
             z-index: 0;
             pointer-events: none;
         }
@@ -51,14 +49,6 @@
         .hero {
             text-align: center;
             margin-bottom: 2.5rem;
-        }
-
-        .hero .logo {
-            max-width: 550px; /* large and clear */
-            width: 100%;
-            height: auto;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.5));
         }
 
         .hero h1 {
@@ -96,8 +86,7 @@
             border: 1px solid rgba(220, 200, 255, 0.3);
         }
 
-        /* Join button */
-        .join-btn {
+        .join-btn, .contribute-btn {
             display: inline-block;
             margin-top: 1.5rem;
             background: rgba(125, 100, 190, 0.85);
@@ -113,13 +102,28 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
-        .join-btn:hover {
+        .join-btn:hover, .contribute-btn:hover {
             background: rgba(110, 85, 175, 0.95);
             transform: translateY(-3px);
             box-shadow: 0 14px 28px rgba(0,0,0,0.5);
         }
 
-        /* Genre Buttons */
+        .contribute-btn {
+            background: rgba(90, 70, 150, 0.85);
+            margin-top: 0.8rem;
+        }
+
+        .contribute-btn:hover {
+            background: rgba(75, 58, 130, 0.95);
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
         .genre-selector {
             display: flex;
             flex-wrap: wrap;
@@ -154,7 +158,6 @@
             box-shadow: 0 8px 18px rgba(100, 70, 170, 0.4);
         }
 
-        /* Player bar – glass morphism */
         .music-player-bar {
             background: rgba(18, 12, 30, 0.7);
             backdrop-filter: blur(16px);
@@ -365,7 +368,6 @@
             opacity: 1;
         }
 
-        /* Footer glass style */
         .footer-content {
             text-align: center;
             font-size: 0.95rem;
@@ -404,6 +406,22 @@
             border: 1px solid rgba(200, 170, 240, 0.35);
         }
 
+        /* Footer logo remains – no top-left logo anymore */
+        .footer-logo {
+            display: inline-block;
+            margin-bottom: 1rem;
+            transition: transform 0.2s ease;
+        }
+        .footer-logo:hover {
+            transform: scale(1.02);
+        }
+        .footer-logo img {
+            height: 275px;
+            width: auto;
+            max-width: 100%;
+            filter: brightness(1.05);
+        }
+
         footer {
             margin-top: 3.5rem;
             border-top: 1px solid rgba(200, 180, 240, 0.25);
@@ -423,8 +441,8 @@
             .progress-area {
                 width: 100%;
             }
-            .hero .logo {
-                max-width: 300px;
+            .footer-logo img {
+                height: 150px;
             }
         }
     </style>
@@ -432,18 +450,16 @@
 <body>
 <div class="app">
     <div class="hero">
-        <!-- Logo kept large -->
-        <img src="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" alt="Sing A New Psalm Logo" class="logo">
         <h1>🎵 Sing A New Psalm</h1>
         <div class="tagline">Christian Music Streaming — Worship that moves heaven</div>
-        <div class="free-badge">✝️ Spirit‑led worship✝️</div>
-        <!-- Join The Open Church Project button -->
-        <div>
+        <div class="free-badge">✝️ Spirit‑led worship ✝️</div>
+        
+        <div class="button-group">
             <a href="https://www.theopenchurchproject.org" target="_blank" rel="noopener" class="join-btn">Join The Open Church Project</a>
+            <a href="https://buy.stripe.com/8x26oI3pfbMIcm67Rl7AI0S" target="_blank" rel="noopener" class="contribute-btn">💝 Contribute Towards Our Efforts</a>
         </div>
     </div>
 
-    <!-- Genre buttons -->
     <div class="genre-selector" id="genreSelector">
         <button class="genre-btn active" data-genre="christianRock">Energy</button>
         <button class="genre-btn" data-genre="rap">Rap</button>
@@ -454,7 +470,6 @@
         <button class="genre-btn" data-genre="psalms">Psalms</button>
     </div>
 
-    <!-- Global player bar -->
     <div class="music-player-bar" id="playerBar">
         <div class="track-info">
             <div class="now-playing-label">🎧 NOW PLAYING</div>
@@ -474,7 +489,6 @@
         </div>
     </div>
 
-    <!-- Playlist section -->
     <div class="playlist-section">
         <div class="section-header">
             <h2 id="playlistTitle">✝️ Energy Playlist</h2>
@@ -485,6 +499,9 @@
 
     <footer>
         <div class="footer-content">
+            <a href="https://www.theopenchurchproject.org" target="_blank" rel="noopener noreferrer" class="footer-logo">
+                <img src="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" alt="The Open Church Project Logo">
+            </a>
             <p><strong>The Open Church Project</strong></p>
             <p>📍 Oklahoma City, OK</p>
             <p>📞 <a href="tel:405-355-8037">405-355-8037</a></p>
@@ -502,9 +519,9 @@
 </div>
 
 <script>
-    // =================================================================
-    // 20 SONGS PER GENRE – EDIT THE 'url' OF EACH SONG WITH YOUR OWN MP3 LINKS
-    // =================================================================
+    // ==============================
+    // SONG ARRAYS (exactly as before)
+    // ==============================
     const christianRockSongs = [
         { title: "God Speed", url: "https://github.com/openchurchproject/OCP-Music/raw/main/E-2.mp3" },
         { title: "Land for the children", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Land-for-the-Children-E-2.mp3" },
@@ -595,7 +612,6 @@
         { title: "Psalm 20", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
     ];
 
-    // Only Pic 8 and Pic 14 used; Gospel gets Pic 8, Sermons gets Pic 14
     const genreBackgrounds = {
         christianRock: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
         rap: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-8.jpg')",
@@ -606,7 +622,6 @@
         psalms: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')"
     };
 
-    // Map genre keys to arrays and display names
     const genreMap = {
         christianRock: { name: "Energy", songs: christianRockSongs },
         rap: { name: "Rap", songs: rapSongs },
@@ -617,9 +632,6 @@
         psalms: { name: "Psalms", songs: psalmsSongs }
     };
 
-    // -----------------------------------------------------------------
-    // Player logic
-    // -----------------------------------------------------------------
     let currentGenre = 'christianRock';
     let songsData = genreMap[currentGenre].songs;
     let currentIndex = 0;
@@ -627,7 +639,6 @@
     const audio = new Audio();
     audio.preload = "metadata";
 
-    // DOM elements
     const playPauseBtn = document.getElementById('playPauseBtn');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -661,9 +672,7 @@
             progressSlider.max = audio.duration;
             audio.removeEventListener('loadedmetadata', onMeta);
         }, { once: true });
-        if (isPlaying) {
-            audio.play().catch(e => console.warn("Playback error:", e));
-        }
+        if (isPlaying) audio.play().catch(e => console.warn("Playback error:", e));
     }
 
     function togglePlayPause() {
@@ -744,7 +753,6 @@
         });
     }
 
-    // Switch genre + background (all buttons now have a background)
     function switchGenre(genreKey) {
         if (genreKey === currentGenre) return;
         currentGenre = genreKey;
@@ -765,15 +773,11 @@
         renderPlaylist();
         genreButtons.forEach(btn => {
             const btnGenre = btn.getAttribute('data-genre');
-            if (btnGenre === genreKey) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            if (btnGenre === genreKey) btn.classList.add('active');
+            else btn.classList.remove('active');
         });
     }
 
-    // Bind genre buttons
     genreButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const genre = this.getAttribute('data-genre');
@@ -781,26 +785,18 @@
         });
     });
 
-    // Audio events
     audio.addEventListener('timeupdate', () => {
         if (audio.duration && !isNaN(audio.duration)) {
             progressSlider.value = audio.currentTime;
             currentTimeSpan.innerText = formatTime(audio.currentTime);
         }
     });
-    audio.addEventListener('ended', () => {
-        nextTrack();
-    });
+    audio.addEventListener('ended', () => nextTrack());
     progressSlider.addEventListener('input', (e) => {
-        if (audio.duration) {
-            audio.currentTime = parseFloat(e.target.value);
-        }
+        if (audio.duration) audio.currentTime = parseFloat(e.target.value);
     });
 
-    // Initial background
     document.body.style.backgroundImage = genreBackgrounds[currentGenre];
-
-    // Initial load
     loadSong(0);
     renderPlaylist();
     audio.pause();
