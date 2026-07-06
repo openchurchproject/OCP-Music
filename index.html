@@ -387,12 +387,12 @@
             background: rgba(255,255,255,0.08);
             padding: 0.15rem 0.8rem;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #d4c2ff;
             border: 1px solid rgba(220,200,255,0.2);
             font-weight: 600;
             word-break: break-all;
-            max-width: 300px;
+            max-width: 400px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -425,6 +425,8 @@
             flex-wrap: wrap;
             align-items: center;
             gap: 0.4rem 0.8rem;
+            flex: 1;
+            min-width: 200px;
         }
         .toast-msg {
             position: fixed;
@@ -455,7 +457,7 @@
             .music-player-bar { flex-direction: column; align-items: stretch; }
             .progress-area { width: 100%; }
             .footer-logo img { height: 150px; }
-            .share-hint code { max-width: 160px; font-size: 0.7rem; }
+            .share-hint code { max-width: 180px; font-size: 0.65rem; }
             .share-hint { flex-wrap: wrap; }
             .songs-grid { grid-template-columns: 1fr; }
             .song-card { padding: 0.8rem; }
@@ -517,9 +519,9 @@
             </div>
             <div class="songs-grid" id="playlistContainer"></div>
             <div class="share-hint" id="shareHint">
-                <span>🔗 Current song link:</span>
+                <span>🔗 Shareable link:</span>
                 <span class="share-wrap">
-                    <code id="shareUrlDisplay" title="Click to copy full link">#energy</code>
+                    <code id="shareUrlDisplay" title="Click to copy the full link">#energy</code>
                     <button class="copy-btn" id="copyShareBtn">📋 Copy</button>
                 </span>
             </div>
@@ -901,10 +903,14 @@
             }, duration);
         }
 
+        /**
+         * UPDATED: now shows the FULL URL, not just the hash.
+         * This ensures that if someone manually highlights and copies,
+         * Facebook (and other platforms) will recognize it as a link.
+         */
         function updateShareHint() {
-            const displayHash = buildHash(currentGenre, currentIndex);
             const fullUrl = getFullShareUrl();
-            shareUrlDisplay.textContent = displayHash;
+            shareUrlDisplay.textContent = fullUrl;
             shareUrlDisplay.title = 'Click to copy: ' + fullUrl;
             copyShareBtn.textContent = '📋 Copy';
             copyShareBtn.classList.remove('copied');
@@ -916,7 +922,6 @@
         }
 
         function doCopy(text, buttonElement) {
-            // If a button element is provided, we'll update its text
             const btn = buttonElement || copyShareBtn;
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(function() {
@@ -965,7 +970,7 @@
             document.body.removeChild(textarea);
         }
 
-        // Click on the hash display copies the full URL
+        // Click on the display copies the full URL
         shareUrlDisplay.addEventListener('click', function() {
             copyShareUrl();
         });
@@ -1046,7 +1051,6 @@
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 if (idx === currentIndex) card.classList.add('active');
-                // Build the share URL for this specific song
                 const shareUrl = getFullShareUrl(currentGenre, idx);
                 card.innerHTML = `
                     <div class="song-index">${idx + 1}</div>
@@ -1058,9 +1062,7 @@
                         <div class="play-icon">🎵</div>
                     </div>
                 `;
-                // Click on card plays the song
                 card.addEventListener('click', function(e) {
-                    // Ignore if click was on the copy button
                     if (e.target.closest('.copy-song-btn')) return;
                     if (idx === currentIndex && !audio.paused) {
                         togglePlayPause();
@@ -1078,10 +1080,9 @@
                         playPauseBtn.innerHTML = "⏸️";
                     }
                 });
-                // Copy button for this specific song
                 const copyBtn = card.querySelector('.copy-song-btn');
                 copyBtn.addEventListener('click', function(e) {
-                    e.stopPropagation(); // prevent card click
+                    e.stopPropagation();
                     const url = this.getAttribute('data-url');
                     doCopy(url, this);
                 });
@@ -1260,8 +1261,7 @@
         console.log('🎵 Sing A New Psalm — share any song via URL!');
         console.log('   Examples: #energy       (first song)');
         console.log('             #energy/3     (third song in Energy)');
-        console.log('             #christianRock/5  (fifth song in Rock)');
-        console.log('   📋 Click the copy button on any song card to copy its direct link.');
+        console.log('   📋 Click the copy button or the link itself to copy the full URL.');
     </script>
 </body>
 </html>
