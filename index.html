@@ -7,11 +7,7 @@
     <link rel="icon" type="image/png" href="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: #f0eef5;
@@ -27,10 +23,7 @@
         body::before {
             content: "";
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(8, 6, 22, 0.6);
             z-index: 0;
             pointer-events: none;
@@ -42,10 +35,7 @@
             position: relative;
             z-index: 1;
         }
-        .hero {
-            text-align: center;
-            margin-bottom: 2.5rem;
-        }
+        .hero { text-align: center; margin-bottom: 2.5rem; }
         .hero h1 {
             font-size: 3rem;
             font-weight: 700;
@@ -55,19 +45,19 @@
             color: transparent;
             letter-spacing: -0.02em;
             margin-bottom: 0.5rem;
-            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .hero .tagline {
             font-size: 1.2rem;
             color: #d5cef0;
             font-weight: 500;
-            border-bottom: 2px solid rgba(220, 210, 255, 0.5);
+            border-bottom: 2px solid rgba(220,210,255,0.5);
             display: inline-block;
             padding-bottom: 0.25rem;
             margin-bottom: 1rem;
         }
         .free-badge {
-            background: rgba(30, 20, 50, 0.7);
+            background: rgba(30,20,50,0.7);
             backdrop-filter: blur(4px);
             color: #e0d6ff;
             font-weight: 600;
@@ -76,13 +66,12 @@
             border-radius: 40px;
             display: inline-block;
             margin-top: 0.5rem;
-            border: 1px solid rgba(220, 200, 255, 0.3);
+            border: 1px solid rgba(220,200,255,0.3);
         }
-        .join-btn,
-        .contribute-btn {
+        .join-btn, .contribute-btn {
             display: inline-block;
             margin-top: 1.5rem;
-            background: rgba(125, 100, 190, 0.85);
+            background: rgba(125,100,190,0.85);
             backdrop-filter: blur(10px);
             color: white;
             font-weight: 700;
@@ -91,28 +80,20 @@
             border-radius: 40px;
             text-decoration: none;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
-        .join-btn:hover,
-        .contribute-btn:hover {
-            background: rgba(110, 85, 175, 0.95);
+        .join-btn:hover, .contribute-btn:hover {
+            background: rgba(110,85,175,0.95);
             transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.5);
         }
         .contribute-btn {
-            background: rgba(90, 70, 150, 0.85);
+            background: rgba(90,70,150,0.85);
             margin-top: 0.8rem;
         }
-        .contribute-btn:hover {
-            background: rgba(75, 58, 130, 0.95);
-        }
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.6rem;
-        }
+        .contribute-btn:hover { background: rgba(75,58,130,0.95); }
+        .button-group { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
         .genre-selector {
             display: flex;
             flex-wrap: wrap;
@@ -121,9 +102,9 @@
             margin-bottom: 2.5rem;
         }
         .genre-btn {
-            background: rgba(20, 15, 35, 0.65);
+            background: rgba(20,15,35,0.65);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(220, 200, 255, 0.25);
+            border: 1px solid rgba(220,200,255,0.25);
             padding: 0.7rem 1.5rem;
             border-radius: 30px;
             font-weight: 600;
@@ -133,21 +114,21 @@
             transition: all 0.3s ease;
         }
         .genre-btn:hover {
-            background: rgba(70, 55, 110, 0.8);
-            border-color: rgba(220, 200, 255, 0.5);
+            background: rgba(70,55,110,0.8);
+            border-color: rgba(220,200,255,0.5);
             transform: translateY(-1px);
         }
         .genre-btn.active {
-            background: rgba(125, 100, 190, 0.9);
+            background: rgba(125,100,190,0.9);
             color: white;
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 18px rgba(100, 70, 170, 0.4);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 8px 18px rgba(100,70,170,0.4);
         }
         .music-player-bar {
-            background: rgba(18, 12, 30, 0.7);
+            background: rgba(18,12,30,0.7);
             backdrop-filter: blur(16px);
             border-radius: 36px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.1) inset;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.1) inset;
             padding: 1.2rem 2rem;
             margin-bottom: 2.8rem;
             display: flex;
@@ -155,12 +136,9 @@
             align-items: center;
             justify-content: space-between;
             gap: 1.2rem;
-            border: 1px solid rgba(220, 200, 255, 0.25);
+            border: 1px solid rgba(220,200,255,0.25);
         }
-        .track-info {
-            flex: 2;
-            min-width: 180px;
-        }
+        .track-info { flex: 2; min-width: 180px; }
         .track-info .now-playing-label {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -176,17 +154,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
+        .player-controls { display: flex; align-items: center; gap: 1.2rem; }
         .ctrl-btn {
-            background: rgba(45, 35, 70, 0.6);
+            background: rgba(45,35,70,0.6);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(220, 200, 255, 0.3);
-            width: 46px;
-            height: 46px;
+            border: 1px solid rgba(220,200,255,0.3);
+            width: 46px; height: 46px;
             border-radius: 60px;
             display: inline-flex;
             align-items: center;
@@ -197,25 +170,19 @@
             font-size: 1.2rem;
         }
         .ctrl-btn:hover {
-            background: rgba(80, 60, 120, 0.8);
-            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(80,60,120,0.8);
+            border-color: rgba(255,255,255,0.5);
             transform: scale(1.04);
         }
         .ctrl-btn.primary {
-            background: rgba(125, 100, 190, 0.9);
+            background: rgba(125,100,190,0.9);
             color: white;
-            width: 56px;
-            height: 56px;
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 18px rgba(100, 70, 170, 0.5);
+            width: 56px; height: 56px;
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 8px 18px rgba(100,70,170,0.5);
         }
-        .ctrl-btn.primary:hover {
-            background: rgba(110, 85, 175, 0.95);
-        }
-        .progress-area {
-            flex: 3;
-            min-width: 200px;
-        }
+        .ctrl-btn.primary:hover { background: rgba(110,85,175,0.95); }
+        .progress-area { flex: 3; min-width: 200px; }
         .time-slider {
             display: flex;
             align-items: center;
@@ -228,22 +195,19 @@
             flex: 1;
             height: 4px;
             -webkit-appearance: none;
-            background: rgba(200, 180, 240, 0.35);
+            background: rgba(200,180,240,0.35);
             border-radius: 10px;
             outline: none;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
+            width: 16px; height: 16px;
             background: #d4c2ff;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
         }
-        .playlist-section {
-            margin-top: 1.5rem;
-        }
+        .playlist-section { margin-top: 1.5rem; }
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -260,114 +224,136 @@
         }
         .song-count {
             font-size: 0.85rem;
-            background: rgba(30, 20, 50, 0.6);
+            background: rgba(30,20,50,0.6);
             backdrop-filter: blur(8px);
             padding: 0.3rem 1rem;
             border-radius: 30px;
             font-weight: 500;
             color: #d5cef0;
-            border: 1px solid rgba(220, 200, 255, 0.3);
+            border: 1px solid rgba(220,200,255,0.3);
         }
         .songs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 1.1rem;
         }
         .song-card {
-            background: rgba(18, 12, 30, 0.65);
+            background: rgba(18,12,30,0.65);
             backdrop-filter: blur(14px);
             border-radius: 26px;
-            padding: 1.1rem 1.3rem;
+            padding: 0.9rem 1.2rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             transition: all 0.3s ease;
-            border: 1px solid rgba(220, 200, 255, 0.2);
+            border: 1px solid rgba(220,200,255,0.2);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
         .song-card:hover {
-            background: rgba(30, 20, 50, 0.75);
-            border-color: rgba(200, 170, 240, 0.5);
-            box-shadow: 0 14px 24px -8px rgba(0, 0, 0, 0.6);
+            background: rgba(30,20,50,0.75);
+            border-color: rgba(200,170,240,0.5);
+            box-shadow: 0 14px 24px -8px rgba(0,0,0,0.6);
             transform: translateY(-2px);
         }
         .song-card.active {
-            background: rgba(70, 55, 110, 0.7);
+            background: rgba(70,55,110,0.7);
             border-left: 6px solid #d4c2ff;
-            border-color: rgba(180, 150, 220, 0.7);
-            box-shadow: 0 10px 22px rgba(80, 50, 140, 0.3);
+            border-color: rgba(180,150,220,0.7);
+            box-shadow: 0 10px 22px rgba(80,50,140,0.3);
         }
         .song-index {
             font-weight: 700;
-            font-size: 1.2rem;
-            width: 42px;
-            height: 42px;
-            background: rgba(40, 30, 65, 0.7);
+            font-size: 1.1rem;
+            width: 36px;
+            height: 36px;
+            background: rgba(40,30,65,0.7);
             border-radius: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #d4c2ff;
-            border: 1px solid rgba(220, 200, 255, 0.3);
+            border: 1px solid rgba(220,200,255,0.3);
+            flex-shrink: 0;
         }
-        .song-details {
-            flex: 1;
-        }
+        .song-details { flex: 1; min-width: 0; }
         .song-title {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #f0ebff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .song-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
         }
         .play-icon {
             color: #b9adff;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0.7;
+            transition: opacity 0.2s;
         }
-        .song-card:hover .play-icon {
-            opacity: 1;
+        .song-card:hover .play-icon { opacity: 1; }
+        .copy-song-btn {
+            background: rgba(125,100,190,0.25);
+            border: 1px solid rgba(220,200,255,0.2);
+            color: #d5cef0;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .copy-song-btn:hover {
+            background: rgba(125,100,190,0.6);
+            border-color: rgba(220,200,255,0.5);
+        }
+        .copy-song-btn.copied {
+            background: rgba(70,180,120,0.5);
+            border-color: rgba(70,180,120,0.5);
+            color: #fff;
         }
         .footer-content {
             text-align: center;
             font-size: 0.95rem;
             line-height: 1.7;
             color: #d5cef0;
-            background: rgba(8, 6, 18, 0.45);
+            background: rgba(8,6,18,0.45);
             backdrop-filter: blur(4px);
             border-radius: 28px;
             padding: 1.8rem 2rem;
             max-width: 700px;
             margin: 0 auto;
         }
-        .footer-content p {
-            margin: 0.5rem 0;
-        }
+        .footer-content p { margin: 0.5rem 0; }
         .footer-content a {
             color: #e0d6ff;
             font-weight: 600;
             text-decoration: none;
         }
-        .footer-content a:hover {
-            text-decoration: underline;
-        }
+        .footer-content a:hover { text-decoration: underline; }
         .footer-highlight {
-            background: rgba(40, 30, 65, 0.7);
+            background: rgba(40,30,65,0.7);
             backdrop-filter: blur(8px);
             border-radius: 20px;
             padding: 1.2rem 1.6rem;
             margin: 1.5rem auto;
             max-width: 600px;
             font-weight: 600;
-            border: 1px solid rgba(200, 170, 240, 0.35);
+            border: 1px solid rgba(200,170,240,0.35);
         }
         .footer-logo {
             display: inline-block;
             margin-bottom: 1rem;
             transition: transform 0.2s ease;
         }
-        .footer-logo:hover {
-            transform: scale(1.02);
-        }
+        .footer-logo:hover { transform: scale(1.02); }
         .footer-logo img {
             height: 275px;
             width: auto;
@@ -376,7 +362,7 @@
         }
         footer {
             margin-top: 3.5rem;
-            border-top: 1px solid rgba(200, 180, 240, 0.25);
+            border-top: 1px solid rgba(200,180,240,0.25);
             padding-top: 2.2rem;
             position: relative;
             z-index: 1;
@@ -384,35 +370,39 @@
         .share-hint {
             font-size: 0.85rem;
             color: #a89fd4;
-            margin-top: 0.8rem;
+            margin-top: 1.2rem;
             opacity: 0.9;
             letter-spacing: 0.3px;
-            background: rgba(18, 12, 30, 0.5);
+            background: rgba(18,12,30,0.5);
             backdrop-filter: blur(4px);
             padding: 0.5rem 1rem;
             border-radius: 30px;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            border: 1px solid rgba(220, 200, 255, 0.15);
+            border: 1px solid rgba(220,200,255,0.15);
+            flex-wrap: wrap;
         }
         .share-hint code {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.08);
             padding: 0.15rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
             color: #d4c2ff;
-            border: 1px solid rgba(220, 200, 255, 0.2);
+            border: 1px solid rgba(220,200,255,0.2);
             font-weight: 600;
             word-break: break-all;
             max-width: 300px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s;
         }
+        .share-hint code:hover { background: rgba(255,255,255,0.15); }
         .share-hint .copy-btn {
-            background: rgba(125, 100, 190, 0.3);
-            border: 1px solid rgba(220, 200, 255, 0.2);
+            background: rgba(125,100,190,0.3);
+            border: 1px solid rgba(220,200,255,0.2);
             color: #d5cef0;
             padding: 0.1rem 0.8rem;
             border-radius: 20px;
@@ -422,12 +412,12 @@
             font-weight: 600;
         }
         .share-hint .copy-btn:hover {
-            background: rgba(125, 100, 190, 0.6);
-            border-color: rgba(220, 200, 255, 0.5);
+            background: rgba(125,100,190,0.6);
+            border-color: rgba(220,200,255,0.5);
         }
         .share-hint .copy-btn.copied {
-            background: rgba(70, 180, 120, 0.5);
-            border-color: rgba(70, 180, 120, 0.5);
+            background: rgba(70,180,120,0.5);
+            border-color: rgba(70,180,120,0.5);
             color: #fff;
         }
         .share-wrap {
@@ -436,27 +426,39 @@
             align-items: center;
             gap: 0.4rem 0.8rem;
         }
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30,22,50,0.95);
+            backdrop-filter: blur(12px);
+            color: #f0ebff;
+            padding: 0.8rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: 1px solid rgba(220,200,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 999;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            opacity: 0;
+            transform: translateX(-50%) translateY(20px);
+            pointer-events: none;
+        }
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
         @media (max-width: 720px) {
-            .app {
-                padding: 1rem;
-            }
-            .music-player-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .progress-area {
-                width: 100%;
-            }
-            .footer-logo img {
-                height: 150px;
-            }
-            .share-hint code {
-                max-width: 160px;
-                font-size: 0.7rem;
-            }
-            .share-hint {
-                flex-wrap: wrap;
-            }
+            .app { padding: 1rem; }
+            .music-player-bar { flex-direction: column; align-items: stretch; }
+            .progress-area { width: 100%; }
+            .footer-logo img { height: 150px; }
+            .share-hint code { max-width: 160px; font-size: 0.7rem; }
+            .share-hint { flex-wrap: wrap; }
+            .songs-grid { grid-template-columns: 1fr; }
+            .song-card { padding: 0.8rem; }
         }
     </style>
 </head>
@@ -515,9 +517,9 @@
             </div>
             <div class="songs-grid" id="playlistContainer"></div>
             <div class="share-hint" id="shareHint">
-                <span>🔗 Share this song:</span>
+                <span>🔗 Current song link:</span>
                 <span class="share-wrap">
-                    <code id="shareUrlDisplay">#energy</code>
+                    <code id="shareUrlDisplay" title="Click to copy full link">#energy</code>
                     <button class="copy-btn" id="copyShareBtn">📋 Copy</button>
                 </span>
             </div>
@@ -543,12 +545,14 @@
         </footer>
     </div>
 
+    <!-- Toast notification -->
+    <div class="toast-msg" id="toastMsg">✅ Link copied!</div>
+
     <script>
         // ============================================================
-        //  SONG DATA
+        //  SONG DATA (exactly as in original)
         // ============================================================
 
-        // ── ENERGY-style songs (formerly christianRockSongs) ──
         const energySongsData = [
             { title: "Pastor Called the Cops on Jesus", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Pastor%20Called%20the%20Cops%20on%20Jesus-Energy.mp3" },
             { title: "The Open Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/The%20Open%20Church-Energy.mp3" },
@@ -593,7 +597,6 @@
             { title: "Breath of Heaven", url: "https://github.com/TitanBusinessPros/SANS/raw/main/Holy%20Spirit%20Radiance%20x%20Heaven's%20Thunder%20(Mashup).mp3" }
         ];
 
-        // ── ROCK-style songs (formerly energySongs) ──
         const rockSongsData = [
             { title: "Locked Out Widows", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Locking%20the%20Widow%20Outside-Rock.mp3" },
             { title: "Ashes Over Oceans", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Ashes%20Over%20Oceans-Rock.mp3" },
@@ -626,11 +629,10 @@
             { title: "Glory Reigns Supreme (Remix)", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Rock-9.mp3" }
         ];
 
-        // ── RAP ──
         const rapSongs = [
             { title: "Which King You Serving", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Which%20King%20You%20Serving-Rap.mp3" },
             { title: "Convoy of the Homeless", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Convoy%20to%20the%20Desert%20(1).mp3" },
-            { title: "Rich Man’s Kingdom", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Rich%20Man%E2%80%99s%20Kingdom-Rap.mp3" },
+            { title: "Rich Man's Kingdom", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Rich%20Man%E2%80%99s%20Kingdom-Rap.mp3" },
             { title: "Fake Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Anti%20Christ%20Church.mp3" },
             { title: "Elmore City Warant", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Elmore%20City%20Warant.mp3" },
             { title: "My_Crew x I_pray (Mashup)", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/My_Crew%20x%20I_pray%20(Mashup).mp3" },
@@ -638,7 +640,7 @@
             { title: "Open Church on the Move", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Open%20Church%20on%20the%20Move.mp3" },
             { title: "Fifty Names of the King", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Fifty%20Names%20of%20the%20King.mp3" },
             { title: "Open Church Armada", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Open%20Church%20Armada.mp3" },
-            { title: "Jesus Don’t Hang at That Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Jesus%20Don%E2%80%99t%20Hang%20at%20That%20Church-Rap.mp3" },
+            { title: "Jesus Don't Hang at That Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Jesus%20Don%E2%80%99t%20Hang%20at%20That%20Church-Rap.mp3" },
             { title: "Door's Don't Close", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Doors%20Don't%20Close.mp3" },
             { title: "Demons in Disguise", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Demons%20in%20Disguise-Rap.mp3" },
             { title: "Land for the little ones", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Rap-1.mp3" },
@@ -657,7 +659,6 @@
             { title: "This that open church", url: "https://github.com/openchurchproject/OCP-Music/raw/main/This-That-open-church-rap-3.mp3" }
         ];
 
-        // ── GOSPEL ──
         const gospelSongs = [
             { title: "Deadbolts on the Kingdom-", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Deadbolts%20on%20the%20Kingdom-Gospel.mp3" },
             { title: "Sanctuary with No Door", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Sanctuary%20with%20No%20Door-Gospel.mp3" },
@@ -684,7 +685,6 @@
             { title: "Awesome Majesty", url: "https://github.com/openchurchproject/OCP-Music/raw/main/G-8.mp3" }
         ];
 
-        // ── CONTEMPORARY ──
         const contemporarySongs = [
             { title: "Father of Forever", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Father%20of%20Forever%20(Upbeat%20Praise%20Remix).mp3" },
             { title: "Praise in the Ash", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Ashes%20and%20Apple.mp3" },
@@ -708,7 +708,6 @@
             { title: "Light of the World", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Light%20of%20the%20World%20(1).mp3" }
         ];
 
-        // ── SERMONS ──
         const sermonsSongs = [
             { title: "The Spirit of the Antichrist", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/The%20Spirit%20of%20the%20Antichrist-Sermon.mp3" },
             { title: "Locked Doors, Open Bible", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Locked%20Doors%2C%20Open%20Bible-Sermon.mp3" },
@@ -719,7 +718,6 @@
             { title: "Jesus Matrix Sermon", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Jesus-Matrix-Sermon.mp3" }
         ];
 
-        // ── PSALMS ──
         const psalmsSongs = [
             { title: "Psalm 84", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Psalm84.mp3" },
             { title: "Psalm 67", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Psalm67.mp3" },
@@ -744,7 +742,6 @@
             { title: "Psalm 148", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Psalm%20148.mp3" }
         ];
 
-        // ── COUNTRY ──
         const countrySongs = [
             { title: "Quiet Little Town-Country", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Quiet%20Little%20Town-Country.mp3" },
             { title: "Big Church, Empty Heart", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Big%20Church%2C%20Empty%20Heart-Country.mp3" },
@@ -752,7 +749,6 @@
             { title: "Jesus-Matrix-Sermon (Country Placeholder)", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Jesus-Matrix-Sermon.mp3" }
         ];
 
-        // ── REGGAE ──
         const reggaeSongs = [
             { title: "Ain't nothing I could say", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Ain't%20nothing%20I%20could%20say-real.mp3" },
             { title: "A Hundred Names", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/A%20Hundred%20Names.mp3" },
@@ -804,7 +800,6 @@
                 genre = raw.substring(0, slashIdx);
                 const indexStr = raw.substring(slashIdx + 1);
                 const parsed = parseInt(indexStr, 10);
-                // URL uses 1-indexed → convert to 0-indexed internally
                 if (!isNaN(parsed) && parsed > 0) {
                     index = parsed - 1;
                 }
@@ -812,20 +807,17 @@
 
             genre = genre.toLowerCase();
 
-            // Validate genre
             if (!genreMap[genre]) return { genre: null, index: null };
 
-            // Validate index
             const songs = genreMap[genre].songs;
             if (index !== null && (index < 0 || index >= songs.length)) {
-                index = null; // fallback to first song
+                index = null;
             }
 
             return { genre, index };
         }
 
         function buildHash(genre, index) {
-            // index is 0-based internally; URL uses 1-based
             if (index !== null && index !== undefined && index > 0) {
                 return '#' + genre + '/' + (index + 1);
             }
@@ -835,7 +827,7 @@
         function updateHash(genre, index) {
             const newHash = buildHash(genre, index);
             if (window.location.hash !== newHash) {
-                window.isInternalHashUpdate = true; // flag to prevent re-triggering
+                window.isInternalHashUpdate = true;
                 window.location.hash = newHash;
             }
         }
@@ -861,9 +853,11 @@
         const playlistTitle = document.getElementById('playlistTitle');
         const songCount = document.getElementById('songCount');
         const shareUrlDisplay = document.getElementById('shareUrlDisplay');
-        const shareHint = document.getElementById('shareHint');
-        const copyBtn = document.getElementById('copyShareBtn');
+        const copyShareBtn = document.getElementById('copyShareBtn');
         const genreButtons = document.querySelectorAll('.genre-btn');
+        const toastMsg = document.getElementById('toastMsg');
+
+        let toastTimer = null;
 
         // ============================================================
         //  HELPERS
@@ -884,67 +878,103 @@
             });
         }
 
-        function getFullShareUrl() {
+        /**
+         * Build the FULL shareable URL with origin, path, and hash.
+         */
+        function getFullShareUrl(genre, index) {
+            genre = genre || currentGenre;
+            index = (index !== undefined) ? index : currentIndex;
             const base = window.location.origin + window.location.pathname + window.location.search;
-            const hash = buildHash(currentGenre, currentIndex);
-            return base + hash;
+            const cleanBase = base.replace(/#.*$/, '');
+            const hash = buildHash(genre, index);
+            return cleanBase + hash;
+        }
+
+        function showToast(text, duration) {
+            duration = duration || 2800;
+            toastMsg.textContent = text || '✅ Link copied!';
+            toastMsg.classList.add('show');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() {
+                toastMsg.classList.remove('show');
+                toastTimer = null;
+            }, duration);
         }
 
         function updateShareHint() {
             const displayHash = buildHash(currentGenre, currentIndex);
+            const fullUrl = getFullShareUrl();
             shareUrlDisplay.textContent = displayHash;
-            shareUrlDisplay.title = getFullShareUrl();
-            const span = shareHint.querySelector('span:first-child');
-            if (span) {
-                span.textContent = '🔗 Share this song:';
-            }
-            copyBtn.textContent = '📋 Copy';
-            copyBtn.classList.remove('copied');
+            shareUrlDisplay.title = 'Click to copy: ' + fullUrl;
+            copyShareBtn.textContent = '📋 Copy';
+            copyShareBtn.classList.remove('copied');
         }
 
         function copyShareUrl() {
             const url = getFullShareUrl();
+            doCopy(url);
+        }
+
+        function doCopy(text, buttonElement) {
+            // If a button element is provided, we'll update its text
+            const btn = buttonElement || copyShareBtn;
             if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(url).then(() => {
-                    copyBtn.textContent = '✅ Copied!';
-                    copyBtn.classList.add('copied');
-                    setTimeout(() => {
-                        copyBtn.textContent = '📋 Copy';
-                        copyBtn.classList.remove('copied');
+                navigator.clipboard.writeText(text).then(function() {
+                    btn.textContent = '✅ Copied!';
+                    btn.classList.add('copied');
+                    showToast('✅ Link copied!');
+                    setTimeout(function() {
+                        btn.textContent = (btn === copyShareBtn) ? '📋 Copy' : '📋 Copy';
+                        btn.classList.remove('copied');
                     }, 3000);
-                }).catch(() => {
-                    fallbackCopy(url);
+                }).catch(function(err) {
+                    console.warn('Clipboard API failed, using fallback:', err);
+                    fallbackCopy(text, btn);
                 });
             } else {
-                fallbackCopy(url);
+                fallbackCopy(text, btn);
             }
         }
 
-        function fallbackCopy(text) {
+        function fallbackCopy(text, btn) {
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
             document.body.appendChild(textarea);
             textarea.select();
             try {
-                document.execCommand('copy');
-                copyBtn.textContent = '✅ Copied!';
-                copyBtn.classList.add('copied');
-                setTimeout(() => {
-                    copyBtn.textContent = '📋 Copy';
-                    copyBtn.classList.remove('copied');
-                }, 3000);
+                const success = document.execCommand('copy');
+                if (success) {
+                    btn.textContent = '✅ Copied!';
+                    btn.classList.add('copied');
+                    showToast('✅ Link copied!');
+                    setTimeout(function() {
+                        btn.textContent = '📋 Copy';
+                        btn.classList.remove('copied');
+                    }, 3000);
+                } else {
+                    showToast('⚠️ Could not copy. Please copy manually: ' + text, 4000);
+                }
             } catch (e) {
-                alert('Copy this URL: ' + text);
+                showToast('⚠️ Please copy this URL manually: ' + text, 5000);
+                console.warn('Fallback copy failed:', e);
             }
             document.body.removeChild(textarea);
         }
 
+        // Click on the hash display copies the full URL
+        shareUrlDisplay.addEventListener('click', function() {
+            copyShareUrl();
+        });
+        copyShareBtn.addEventListener('click', copyShareUrl);
+
         // ============================================================
         //  CORE PLAYER FUNCTIONS
         // ============================================================
-        function loadSong(index, updateUrl = true) {
+        function loadSong(index, updateUrl) {
             if (index < 0) index = 0;
             if (index >= songsData.length) index = 0;
             currentIndex = index;
@@ -953,26 +983,32 @@
             audio.load();
             currentTrackLabel.innerText = song.title;
             updateActiveCard();
-            audio.addEventListener('loadedmetadata', function onMeta() {
-                durationSpan.innerText = formatTime(audio.duration);
-                progressSlider.max = audio.duration;
-                audio.removeEventListener('loadedmetadata', onMeta);
-            }, { once: true });
+
+            audio.removeEventListener('loadedmetadata', onMetadataLoaded);
+            audio.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
+
             if (isPlaying) {
-                audio.play().catch(e => console.warn("Playback error:", e));
+                audio.play().catch(function(e) { console.warn('Playback error:', e); });
             }
-            if (updateUrl) {
+            if (updateUrl !== false) {
                 updateHash(currentGenre, currentIndex);
             }
             updateShareHint();
         }
 
+        function onMetadataLoaded() {
+            durationSpan.innerText = formatTime(audio.duration);
+            progressSlider.max = audio.duration;
+        }
+
         function togglePlayPause() {
             if (audio.paused) {
-                audio.play().then(() => {
+                audio.play().then(function() {
                     isPlaying = true;
                     playPauseBtn.innerHTML = "⏸️";
-                }).catch(err => console.warn("Autoplay blocked?", err));
+                }).catch(function(err) {
+                    console.warn('Autoplay blocked?', err);
+                });
             } else {
                 audio.pause();
                 isPlaying = false;
@@ -985,7 +1021,7 @@
             if (next >= songsData.length) next = 0;
             currentIndex = next;
             loadSong(currentIndex, true);
-            if (isPlaying) audio.play().catch(e => console.log);
+            if (isPlaying) audio.play().catch(function(e) { console.log(e); });
         }
 
         function prevTrack() {
@@ -993,12 +1029,12 @@
             if (prev < 0) prev = songsData.length - 1;
             currentIndex = prev;
             loadSong(currentIndex, true);
-            if (isPlaying) audio.play().catch(e => console.log);
+            if (isPlaying) audio.play().catch(function(e) { console.log(e); });
         }
 
         function updateActiveCard() {
             const cards = document.querySelectorAll('.song-card');
-            cards.forEach((card, idx) => {
+            cards.forEach(function(card, idx) {
                 if (idx === currentIndex) card.classList.add('active');
                 else card.classList.remove('active');
             });
@@ -1006,18 +1042,26 @@
 
         function renderPlaylist() {
             playlistContainer.innerHTML = '';
-            songsData.forEach((song, idx) => {
+            songsData.forEach(function(song, idx) {
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 if (idx === currentIndex) card.classList.add('active');
+                // Build the share URL for this specific song
+                const shareUrl = getFullShareUrl(currentGenre, idx);
                 card.innerHTML = `
                     <div class="song-index">${idx + 1}</div>
                     <div class="song-details">
                         <div class="song-title">${escapeHtml(song.title)}</div>
                     </div>
-                    <div class="play-icon">🎵</div>
+                    <div class="song-actions">
+                        <button class="copy-song-btn" data-url="${escapeHtml(shareUrl)}" title="Copy link to this song">📋 Copy</button>
+                        <div class="play-icon">🎵</div>
+                    </div>
                 `;
-                card.addEventListener('click', function() {
+                // Click on card plays the song
+                card.addEventListener('click', function(e) {
+                    // Ignore if click was on the copy button
+                    if (e.target.closest('.copy-song-btn')) return;
                     if (idx === currentIndex && !audio.paused) {
                         togglePlayPause();
                         return;
@@ -1025,19 +1069,26 @@
                     currentIndex = idx;
                     loadSong(currentIndex, true);
                     if (audio.paused) {
-                        audio.play().then(() => {
+                        audio.play().then(function() {
                             isPlaying = true;
                             playPauseBtn.innerHTML = "⏸️";
-                        }).catch(() => {});
+                        }).catch(function() {});
                     } else {
                         isPlaying = true;
                         playPauseBtn.innerHTML = "⏸️";
                     }
                 });
+                // Copy button for this specific song
+                const copyBtn = card.querySelector('.copy-song-btn');
+                copyBtn.addEventListener('click', function(e) {
+                    e.stopPropagation(); // prevent card click
+                    const url = this.getAttribute('data-url');
+                    doCopy(url, this);
+                });
                 playlistContainer.appendChild(card);
             });
-            playlistTitle.innerText = `✝️ ${genreMap[currentGenre].name} Playlist`;
-            songCount.innerText = `${songsData.length} tracks`;
+            playlistTitle.innerText = '✝️ ' + genreMap[currentGenre].name + ' Playlist';
+            songCount.innerText = songsData.length + ' tracks';
             updateShareHint();
         }
 
@@ -1046,7 +1097,7 @@
         // ============================================================
         function switchGenre(genreKey, index) {
             if (!genreMap[genreKey]) {
-                console.warn("Unknown genre:", genreKey);
+                console.warn('Unknown genre:', genreKey);
                 return;
             }
 
@@ -1058,7 +1109,6 @@
             currentGenre = genreKey;
             songsData = genreMap[genreKey].songs;
 
-            // Validate index
             if (index === null || index === undefined || index < 0 || index >= songsData.length) {
                 index = 0;
             }
@@ -1069,20 +1119,19 @@
             loadSong(currentIndex, false);
             renderPlaylist();
 
-            genreButtons.forEach(btn => {
+            genreButtons.forEach(function(btn) {
                 const btnGenre = btn.getAttribute('data-genre');
                 if (btnGenre === genreKey) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
 
-            // Update URL after everything is set
             updateHash(currentGenre, currentIndex);
 
             if (wasPlaying) {
-                audio.play().then(() => {
+                audio.play().then(function() {
                     isPlaying = true;
                     playPauseBtn.innerHTML = "⏸️";
-                }).catch(() => {});
+                }).catch(function() {});
             }
 
             updateShareHint();
@@ -1094,7 +1143,6 @@
         function loadFromHash() {
             const parsed = parseHash();
             if (!parsed.genre) {
-                // Invalid hash → fallback to energy / first song
                 if (currentGenre !== 'energy' || currentIndex !== 0) {
                     switchGenre('energy', 0);
                 }
@@ -1107,23 +1155,20 @@
             if (genre !== currentGenre) {
                 switchGenre(genre, targetIndex);
             } else if (targetIndex !== currentIndex) {
-                // Same genre, different song
                 currentIndex = targetIndex;
                 loadSong(currentIndex, false);
                 updateHash(currentGenre, currentIndex);
                 renderPlaylist();
-                // Ensure the active genre button stays active
-                genreButtons.forEach(btn => {
+                genreButtons.forEach(function(btn) {
                     const btnGenre = btn.getAttribute('data-genre');
                     if (btnGenre === currentGenre) btn.classList.add('active');
                     else btn.classList.remove('active');
                 });
                 updateShareHint();
                 if (isPlaying) {
-                    audio.play().catch(() => {});
+                    audio.play().catch(function() {});
                 }
             } else {
-                // Same genre + same song → just ensure URL is correct
                 updateHash(currentGenre, currentIndex);
                 updateShareHint();
             }
@@ -1143,13 +1188,12 @@
         // ============================================================
         //  GENRE BUTTON CLICKS
         // ============================================================
-        genreButtons.forEach(btn => {
+        genreButtons.forEach(function(btn) {
             btn.addEventListener('click', function() {
                 const genre = this.getAttribute('data-genre');
                 if (genre !== currentGenre) {
                     switchGenre(genre, 0);
                 } else {
-                    // Already on this genre → just update URL to first song
                     if (currentIndex !== 0) {
                         currentIndex = 0;
                         loadSong(currentIndex, true);
@@ -1164,14 +1208,14 @@
         // ============================================================
         //  AUDIO EVENT BINDINGS
         // ============================================================
-        audio.addEventListener('timeupdate', () => {
+        audio.addEventListener('timeupdate', function() {
             if (audio.duration && !isNaN(audio.duration)) {
                 progressSlider.value = audio.currentTime;
                 currentTimeSpan.innerText = formatTime(audio.currentTime);
             }
         });
-        audio.addEventListener('ended', () => nextTrack());
-        progressSlider.addEventListener('input', (e) => {
+        audio.addEventListener('ended', function() { nextTrack(); });
+        progressSlider.addEventListener('input', function(e) {
             if (audio.duration) audio.currentTime = parseFloat(e.target.value);
         });
 
@@ -1179,15 +1223,13 @@
         prevBtn.addEventListener('click', prevTrack);
         nextBtn.addEventListener('click', nextTrack);
 
-        // Copy button
-        copyBtn.addEventListener('click', copyShareUrl);
-
         // ============================================================
         //  INITIALIZE
         // ============================================================
         const parsed = parseHash();
         const startGenre = parsed.genre || 'energy';
-        const startIndex = (parsed.index !== null && parsed.index >= 0 && parsed.index < genreMap[startGenre].songs.length) ? parsed.index : 0;
+        const startIndex = (parsed.index !== null && parsed.index >= 0 && parsed.index < genreMap[startGenre].songs
+            .length) ? parsed.index : 0;
 
         document.body.style.backgroundImage = genreBackgrounds[startGenre];
 
@@ -1198,13 +1240,12 @@
         loadSong(currentIndex, false);
         renderPlaylist();
 
-        genreButtons.forEach(btn => {
+        genreButtons.forEach(function(btn) {
             const btnGenre = btn.getAttribute('data-genre');
             if (btnGenre === currentGenre) btn.classList.add('active');
             else btn.classList.remove('active');
         });
 
-        // Ensure URL matches state
         window.isInternalHashUpdate = true;
         if (window.location.hash !== buildHash(currentGenre, currentIndex)) {
             window.location.hash = buildHash(currentGenre, currentIndex);
@@ -1220,7 +1261,7 @@
         console.log('   Examples: #energy       (first song)');
         console.log('             #energy/3     (third song in Energy)');
         console.log('             #christianRock/5  (fifth song in Rock)');
-        console.log('   📋 Click the copy button next to the URL to copy the shareable link.');
+        console.log('   📋 Click the copy button on any song card to copy its direct link.');
     </script>
 </body>
 </html>
