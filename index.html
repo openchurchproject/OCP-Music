@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Sing A New Psalm | Christian Music Streaming</title>
+    <!-- Open Graph for rich previews -->
+    <meta property="og:title" content="Sing A New Psalm" />
+    <meta property="og:description" content="Christian Music Streaming — Worship that moves heaven" />
+    <meta property="og:image" content="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" />
+    <meta property="og:url" content="https://your-site.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/png" href="https://github.com/openchurchproject/OCP-Music/raw/main/OCP-Logo-Compressed.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <style>
@@ -288,7 +294,7 @@
         .song-actions {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             flex-shrink: 0;
         }
         .play-icon {
@@ -309,6 +315,10 @@
             transition: all 0.2s ease;
             font-weight: 600;
             white-space: nowrap;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
         }
         .copy-song-btn:hover {
             background: rgba(125,100,190,0.6);
@@ -392,7 +402,7 @@
             border: 1px solid rgba(220,200,255,0.2);
             font-weight: 600;
             word-break: break-all;
-            max-width: 400px;
+            max-width: 450px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -521,7 +531,7 @@
             <div class="share-hint" id="shareHint">
                 <span>🔗 Shareable link:</span>
                 <span class="share-wrap">
-                    <code id="shareUrlDisplay" title="Click to copy the full link">#energy</code>
+                    <code id="shareUrlDisplay" title="Click to copy the full link">https://...</code>
                     <button class="copy-btn" id="copyShareBtn">📋 Copy</button>
                 </span>
             </div>
@@ -785,38 +795,62 @@
         };
 
         // ============================================================
-        //  ROUTING: read / write genre + song index from URL hash
-        //  URL format: #genre           → first song (index 0)
-        //              #genre/2         → second song (index 1)  [1-indexed in URL]
+        //  ROUTING: read from query string OR hash
+        //  Query: ?song=genre/2   (1-based index)
+        //  Hash:  #genre/2        (1-based index)
         // ============================================================
 
-        function parseHash() {
-            const raw = window.location.hash.slice(1);
-            if (!raw) return { genre: null, index: null };
+        function parseParams() {
+            // First check query string
+            const urlParams = new URLSearchParams(window.location.search);
+            const songParam = urlParams.get('song');
+            let genre = null, index = null;
 
-            let genre = raw;
-            let index = null;
-
-            const slashIdx = raw.indexOf('/');
-            if (slashIdx !== -1) {
-                genre = raw.substring(0, slashIdx);
-                const indexStr = raw.substring(slashIdx + 1);
-                const parsed = parseInt(indexStr, 10);
-                if (!isNaN(parsed) && parsed > 0) {
-                    index = parsed - 1;
+            if (songParam) {
+                const parts = songParam.split('/');
+                if (parts.length === 2) {
+                    const g = parts[0].toLowerCase();
+                    const idx = parseInt(parts[1], 10);
+                    if (genreMap[g] && !isNaN(idx) && idx > 0) {
+                        genre = g;
+                        index = idx - 1; // convert to 0-based
+                        // Validate index
+                        if (index >= genreMap[genre].songs.length) {
+                            index = 0;
+                        }
+                        return { genre, index };
+                    }
                 }
             }
 
-            genre = genre.toLowerCase();
+            // Fallback to hash
+            const raw = window.location.hash.slice(1);
+            if (!raw) return { genre: null, index: null };
 
-            if (!genreMap[genre]) return { genre: null, index: null };
-
-            const songs = genreMap[genre].songs;
-            if (index !== null && (index < 0 || index >= songs.length)) {
-                index = null;
+            let hashGenre = raw;
+            let hashIndex = null;
+            const slashIdx = raw.indexOf('/');
+            if (slashIdx !== -1) {
+                hashGenre = raw.substring(0, slashIdx);
+                const indexStr = raw.substring(slashIdx + 1);
+                const parsed = parseInt(indexStr, 10);
+                if (!isNaN(parsed) && parsed > 0) {
+                    hashIndex = parsed - 1;
+                }
             }
+            hashGenre = hashGenre.toLowerCase();
+            if (!genreMap[hashGenre]) return { genre: null, index: null };
+            const songs = genreMap[hashGenre].songs;
+            if (hashIndex !== null && (hashIndex < 0 || hashIndex >= songs.length)) {
+                hashIndex = null;
+            }
+            return { genre: hashGenre, index: hashIndex };
+        }
 
-            return { genre, index };
+        function buildQueryString(genre, index) {
+            // index is 0-based, convert to 1-based for URL
+            const idx = (index !== null && index !== undefined) ? (index + 1) : 1;
+            return '?song=' + encodeURIComponent(genre + '/' + idx);
         }
 
         function buildHash(genre, index) {
@@ -826,11 +860,27 @@
             return '#' + genre;
         }
 
-        function updateHash(genre, index) {
+        function updateUrl(genre, index) {
+            const newQuery = buildQueryString(genre, index);
             const newHash = buildHash(genre, index);
-            if (window.location.hash !== newHash) {
-                window.isInternalHashUpdate = true;
-                window.location.hash = newHash;
+            // We want to keep both, but only update if different
+            const currentSearch = window.location.search;
+            const currentHash = window.location.hash;
+            let newSearch = currentSearch;
+            // Remove any existing song param
+            const params = new URLSearchParams(newSearch);
+            params.delete('song');
+            // Add new song param
+            const idx = (index !== null && index !== undefined) ? (index + 1) : 1;
+            params.set('song', genre + '/' + idx);
+            newSearch = '?' + params.toString();
+
+            if (newSearch !== currentSearch || newHash !== currentHash) {
+                window.isInternalUpdate = true;
+                // We'll update the entire URL
+                const base = window.location.origin + window.location.pathname;
+                const newUrl = base + newSearch + newHash;
+                history.replaceState(null, '', newUrl);
             }
         }
 
@@ -881,15 +931,16 @@
         }
 
         /**
-         * Build the FULL shareable URL with origin, path, and hash.
+         * Build the FULL shareable URL with query string AND hash.
+         * This ensures Facebook (and all platforms) see a complete link.
          */
         function getFullShareUrl(genre, index) {
             genre = genre || currentGenre;
             index = (index !== undefined) ? index : currentIndex;
-            const base = window.location.origin + window.location.pathname + window.location.search;
-            const cleanBase = base.replace(/#.*$/, '');
+            const base = window.location.origin + window.location.pathname;
+            const query = buildQueryString(genre, index);
             const hash = buildHash(genre, index);
-            return cleanBase + hash;
+            return base + query + hash;
         }
 
         function showToast(text, duration) {
@@ -903,11 +954,6 @@
             }, duration);
         }
 
-        /**
-         * UPDATED: now shows the FULL URL, not just the hash.
-         * This ensures that if someone manually highlights and copies,
-         * Facebook (and other platforms) will recognize it as a link.
-         */
         function updateShareHint() {
             const fullUrl = getFullShareUrl();
             shareUrlDisplay.textContent = fullUrl;
@@ -996,7 +1042,7 @@
                 audio.play().catch(function(e) { console.warn('Playback error:', e); });
             }
             if (updateUrl !== false) {
-                updateHash(currentGenre, currentIndex);
+                updateUrlState(currentGenre, currentIndex);
             }
             updateShareHint();
         }
@@ -1043,6 +1089,15 @@
                 if (idx === currentIndex) card.classList.add('active');
                 else card.classList.remove('active');
             });
+        }
+
+        function updateUrlState(genre, index) {
+            const newQuery = buildQueryString(genre, index);
+            const newHash = buildHash(genre, index);
+            const base = window.location.origin + window.location.pathname;
+            const newUrl = base + newQuery + newHash;
+            window.isInternalUpdate = true;
+            history.replaceState(null, '', newUrl);
         }
 
         function renderPlaylist() {
@@ -1126,7 +1181,7 @@
                 else btn.classList.remove('active');
             });
 
-            updateHash(currentGenre, currentIndex);
+            updateUrlState(currentGenre, currentIndex);
 
             if (wasPlaying) {
                 audio.play().then(function() {
@@ -1139,10 +1194,10 @@
         }
 
         // ============================================================
-        //  LOAD FROM HASH (called on hashchange and init)
+        //  LOAD FROM PARAMS (called on init and popstate/hashchange)
         // ============================================================
-        function loadFromHash() {
-            const parsed = parseHash();
+        function loadFromParams() {
+            const parsed = parseParams();
             if (!parsed.genre) {
                 if (currentGenre !== 'energy' || currentIndex !== 0) {
                     switchGenre('energy', 0);
@@ -1158,7 +1213,7 @@
             } else if (targetIndex !== currentIndex) {
                 currentIndex = targetIndex;
                 loadSong(currentIndex, false);
-                updateHash(currentGenre, currentIndex);
+                updateUrlState(currentGenre, currentIndex);
                 renderPlaylist();
                 genreButtons.forEach(function(btn) {
                     const btnGenre = btn.getAttribute('data-genre');
@@ -1170,20 +1225,30 @@
                     audio.play().catch(function() {});
                 }
             } else {
-                updateHash(currentGenre, currentIndex);
+                // Ensure URL is consistent
+                updateUrlState(currentGenre, currentIndex);
                 updateShareHint();
             }
         }
 
         // ============================================================
-        //  HASH CHANGE LISTENER
+        //  URL CHANGE LISTENERS
         // ============================================================
-        window.addEventListener('hashchange', function() {
-            if (window.isInternalHashUpdate) {
-                window.isInternalHashUpdate = false;
+        window.addEventListener('popstate', function() {
+            if (window.isInternalUpdate) {
+                window.isInternalUpdate = false;
                 return;
             }
-            loadFromHash();
+            loadFromParams();
+        });
+
+        // Also listen to hashchange for backward compatibility
+        window.addEventListener('hashchange', function() {
+            if (window.isInternalUpdate) {
+                window.isInternalUpdate = false;
+                return;
+            }
+            loadFromParams();
         });
 
         // ============================================================
@@ -1200,7 +1265,7 @@
                         loadSong(currentIndex, true);
                         renderPlaylist();
                     } else {
-                        updateHash(currentGenre, 0);
+                        updateUrlState(currentGenre, 0);
                     }
                 }
             });
@@ -1227,7 +1292,7 @@
         // ============================================================
         //  INITIALIZE
         // ============================================================
-        const parsed = parseHash();
+        const parsed = parseParams();
         const startGenre = parsed.genre || 'energy';
         const startIndex = (parsed.index !== null && parsed.index >= 0 && parsed.index < genreMap[startGenre].songs
             .length) ? parsed.index : 0;
@@ -1247,9 +1312,16 @@
             else btn.classList.remove('active');
         });
 
-        window.isInternalHashUpdate = true;
-        if (window.location.hash !== buildHash(currentGenre, currentIndex)) {
-            window.location.hash = buildHash(currentGenre, currentIndex);
+        // Ensure URL has both query and hash
+        const currentSearch = window.location.search;
+        const currentHash = window.location.hash;
+        const expectedQuery = buildQueryString(currentGenre, currentIndex);
+        const expectedHash = buildHash(currentGenre, currentIndex);
+        if (currentSearch !== expectedQuery || currentHash !== expectedHash) {
+            window.isInternalUpdate = true;
+            const base = window.location.origin + window.location.pathname;
+            const newUrl = base + expectedQuery + expectedHash;
+            history.replaceState(null, '', newUrl);
         }
         updateShareHint();
 
@@ -1259,9 +1331,8 @@
         audio.volume = 0.8;
 
         console.log('🎵 Sing A New Psalm — share any song via URL!');
-        console.log('   Examples: #energy       (first song)');
-        console.log('             #energy/3     (third song in Energy)');
-        console.log('   📋 Click the copy button or the link itself to copy the full URL.');
+        console.log('   Copied links now include both query and hash for 100% Facebook compatibility.');
+        console.log('   Example: https://yoursite.com/?song=energy/3#energy/3');
     </script>
 </body>
 </html>
