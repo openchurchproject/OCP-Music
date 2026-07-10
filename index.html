@@ -499,6 +499,10 @@
             <button class="genre-btn" data-genre="psalms">Psalms</button>
             <button class="genre-btn" data-genre="country">Country</button>
             <button class="genre-btn" data-genre="reggae">Reggae</button>
+            <!-- NEW: Celtic, Korean, Chinese Praise -->
+            <button class="genre-btn" data-genre="celtic">Celtic Praise</button>
+            <button class="genre-btn" data-genre="korean">Korean Praise</button>
+            <button class="genre-btn" data-genre="chinese">Chinese Praise</button>
         </div>
 
         <!-- PLAYER BAR -->
@@ -566,6 +570,7 @@
         // ============================================================
 
         const energySongsData = [
+            { title: "Yahweh Love, Jehovah Light", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Yahweh%20Love%2C%20Jehovah%20Light.mp3" },
             { title: "Pastor Called the Cops on Jesus", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Pastor%20Called%20the%20Cops%20on%20Jesus-Energy.mp3" },
             { title: "The Open Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/The%20Open%20Church-Energy.mp3" },
             { title: "Two Masters", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Two%20Masters-Energy.mp3" },
@@ -769,6 +774,33 @@
         ];
 
         // ============================================================
+        //  NEW: Directly defined song arrays for Celtic, Korean, Chinese
+        //  (Edit these independently to add your own tracks)
+        // ============================================================
+        const celticSongs = [
+            { title: "Deadbolts on the Kingdom-", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Deadbolts%20on%20the%20Kingdom-Gospel.mp3" },
+            { title: "Sanctuary with No Door", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Sanctuary%20with%20No%20Door-Gospel.mp3" },
+            { title: "This That Open Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/This%20That%20Open%20Church-Gospel.mp3" }
+        ];
+
+        const koreanSongs = [
+            { title: "Deadbolts on the Kingdom-", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Deadbolts%20on%20the%20Kingdom-Gospel.mp3" },
+            { title: "Sanctuary with No Door", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Sanctuary%20with%20No%20Door-Gospel.mp3" },
+            { title: "This That Open Church", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/This%20That%20Open%20Church-Gospel.mp3" }
+        ];
+
+        const chineseSongs = [
+            { title: "Holy Fire", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Fire-Chinese.mp3" },
+            { title: "Holy Hallelujah", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Hallelujah-Chinese.mp3" },
+            { title: "Holy Fire Anthem", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Fire%20Anthem-Chinese.mp3" },
+            { title: "Holy Chants", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Chants-Chinese.mp3" },
+             { title: "Heaven's Anthem", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Heaven's%20Anthem-Chinese.mp3" },
+            { title: "Heavenly Flex", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Heavenly%20Flex-Chinese.mp3" },
+            { title: "Holy Follows Me", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Follows%20Me.mp3" },
+            { title: "Open Church Hallelujah", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Hallelujah-Chinese-2.mp3" }
+        ];
+
+        // ============================================================
         //  GENRE MAP & BACKGROUNDS
         // ============================================================
         const genreBackgrounds = {
@@ -780,7 +812,10 @@
             sermons: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
             psalms: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
             country: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
-            reggae: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')"
+            reggae: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+            celtic: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+            korean: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+            chinese: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')"
         };
 
         const genreMap = {
@@ -792,7 +827,11 @@
             sermons: { name: "Sermons", songs: sermonsSongs },
             psalms: { name: "Psalms", songs: psalmsSongs },
             country: { name: "Country", songs: countrySongs },
-            reggae: { name: "Reggae", songs: reggaeSongs }
+            reggae: { name: "Reggae", songs: reggaeSongs },
+            // NEW: each genre now has its own dedicated array – edit these directly!
+            celtic:  { name: "Celtic Praise", songs: celticSongs },
+            korean:  { name: "Korean Praise", songs: koreanSongs },
+            chinese: { name: "Chinese Praise", songs: chineseSongs }
         };
 
         // ============================================================
@@ -805,7 +844,8 @@
             // First check query string
             const urlParams = new URLSearchParams(window.location.search);
             const songParam = urlParams.get('song');
-            let genre = null, index = null;
+            let genre = null,
+                index = null;
 
             if (songParam) {
                 const parts = songParam.split('/');
@@ -1109,15 +1149,15 @@
                 if (idx === currentIndex) card.classList.add('active');
                 const shareUrl = getFullShareUrl(currentGenre, idx);
                 card.innerHTML = `
-                    <div class="song-index">${idx + 1}</div>
-                    <div class="song-details">
-                        <div class="song-title">${escapeHtml(song.title)}</div>
-                    </div>
-                    <div class="song-actions">
-                        <button class="copy-song-btn" data-url="${escapeHtml(shareUrl)}" title="Copy link to this song">📋 Copy</button>
-                        <div class="play-icon">🎵</div>
-                    </div>
-                `;
+                        <div class="song-index">${idx + 1}</div>
+                        <div class="song-details">
+                            <div class="song-title">${escapeHtml(song.title)}</div>
+                        </div>
+                        <div class="song-actions">
+                            <button class="copy-song-btn" data-url="${escapeHtml(shareUrl)}" title="Copy link to this song">📋 Copy</button>
+                            <div class="play-icon">🎵</div>
+                        </div>
+                    `;
                 card.addEventListener('click', function(e) {
                     if (e.target.closest('.copy-song-btn')) return;
                     if (idx === currentIndex && !audio.paused) {
@@ -1334,6 +1374,8 @@
         console.log('🎵 Sing A New Psalm — share any song via URL!');
         console.log('   Copied links now include both query and hash for 100% Facebook compatibility.');
         console.log('   Example: https://yoursite.com/?song=energy/3#energy/3');
+        console.log('   New genres: Celtic Praise, Korean Praise, Chinese Praise — each has its own editable song array.');
+        console.log('   Edit celticSongs, koreanSongs, or chineseSongs in the script to add your own tracks.');
     </script>
 </body>
 </html>
