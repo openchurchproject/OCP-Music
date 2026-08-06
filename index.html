@@ -922,6 +922,17 @@
         //  Hash:  #genre/2        (1-based index)
         // ============================================================
 
+        // Case-insensitive lookup of a genre key (genreMap keys like "christianRock"
+        // and "choppedScrewed" are camelCase, but URLs may arrive lowercased).
+        function resolveGenreKey(input) {
+            if (!input) return null;
+            const lower = input.toLowerCase();
+            const match = Object.keys(genreMap).find(function(k) {
+                return k.toLowerCase() === lower;
+            });
+            return match || null;
+        }
+
         function parseParams() {
             // First check query string
             const urlParams = new URLSearchParams(window.location.search);
@@ -932,9 +943,9 @@
             if (songParam) {
                 const parts = songParam.split('/');
                 if (parts.length === 2) {
-                    const g = parts[0].toLowerCase();
+                    const g = resolveGenreKey(parts[0]);
                     const idx = parseInt(parts[1], 10);
-                    if (genreMap[g] && !isNaN(idx) && idx > 0) {
+                    if (g && !isNaN(idx) && idx > 0) {
                         genre = g;
                         index = idx - 1; // convert to 0-based
                         // Validate index
@@ -961,13 +972,13 @@
                     hashIndex = parsed - 1;
                 }
             }
-            hashGenre = hashGenre.toLowerCase();
-            if (!genreMap[hashGenre]) return { genre: null, index: null };
-            const songs = genreMap[hashGenre].songs;
+            const resolvedHashGenre = resolveGenreKey(hashGenre);
+            if (!resolvedHashGenre) return { genre: null, index: null };
+            const songs = genreMap[resolvedHashGenre].songs;
             if (hashIndex !== null && (hashIndex < 0 || hashIndex >= songs.length)) {
                 hashIndex = null;
             }
-            return { genre: hashGenre, index: hashIndex };
+            return { genre: resolvedHashGenre, index: hashIndex };
         }
 
         function buildQueryString(genre, index) {
