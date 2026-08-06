@@ -503,6 +503,7 @@
             <button class="genre-btn" data-genre="celtic">Celtic Praise</button>
             <button class="genre-btn" data-genre="korean">Korean Praise</button>
             <button class="genre-btn" data-genre="chinese">Chinese Praise</button>
+            <button class="genre-btn" data-genre="choppedScrewed">Chopped &amp; Screwed</button>
         </div>
 
         <!-- PLAYER BAR -->
@@ -855,6 +856,30 @@
             { title: "Open Church Hallelujah", url: "https://github.com/openchurchproject/OCP-Music-2/raw/main/Holy%20Hallelujah-Chinese-2.mp3" }
         ];
 
+        const choppedScrewedSongs = [
+            { title: "Holy Spirit Spill", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Holy%20Spirit%20Spill.mp3" },
+            { title: "Back on the Clouds", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Back%20on%20the%20Clouds.mp3" },
+            { title: "Blood Lamb Escape", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Blood%20Lamb%20Escape.mp3" },
+            { title: "Blood of the Lamb", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Blood%20of%20the%20Lamb.mp3" },
+            { title: "Church Gone Wild", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Church%20Gone%20Wild.mp3" },
+            { title: "Clouds Split Open", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Clouds%20Split%20Open.mp3" },
+            { title: "Deep Inside (Chopped in Sleep Mode)", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Deep%20Inside%20(Chopped%20in%20Sleep%20Mode).mp3" },
+            { title: "Dust in the Pews-Rap", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Dust%20in%20the%20Pews-Rap.mp3" },
+            { title: "Holy Ghost Dance", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Holy%20Ghost%20Dance.mp3" },
+            { title: "Holy Ghost Transfer", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Holy%20Ghost%20Transfer.mp3" },
+            { title: "Holy Spirit Transfer", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Holy%20Spirit%20Transfer.mp3" },
+            { title: "I got out", url: "https://github.com/openchurchproject/OCP-Music/raw/main/I%20got%20out.mp3" },
+            { title: "I made it out", url: "https://github.com/openchurchproject/OCP-Music/raw/main/I%20made%20it%20out.mp3" },
+            { title: "I'm already gone", url: "https://github.com/openchurchproject/OCP-Music/raw/main/I'm%20already%20gone.mp3" },
+            { title: "Locked Church Doors", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Locked%20Church%20Doors.mp3" },
+            { title: "Oklahoma Demon Run", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Oklahoma%20Demon%20Run.mp3" },
+            { title: "Oklahoma Shadows-Rap", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Oklahoma%20Shadows-Rap.mp3" },
+            { title: "Open All Night", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Open%20All%20Night.mp3" },
+            { title: "Open Chapel All Night", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Open%20Chapel%20All%20Night.mp3" },
+            { title: "Sky Split Gospel", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Sky%20Split%20Gospel.mp3" },
+            { title: "Sooner Exorcism", url: "https://github.com/openchurchproject/OCP-Music/raw/main/Sooner%20Exorcism.mp3" }
+        ];
+
         // ============================================================
         //  GENRE MAP & BACKGROUNDS
         // ============================================================
@@ -870,7 +895,8 @@
             reggae: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
             celtic: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
             korean: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
-            chinese: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')"
+            chinese: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-14.jpg')",
+            choppedScrewed: "url('https://github.com/openchurchproject/OCP-Music/raw/main/Pic-8.jpg')"
         };
 
         const genreMap = {
@@ -886,7 +912,8 @@
             // NEW: each genre now has its own dedicated array – edit these directly!
             celtic:  { name: "Celtic Praise", songs: celticSongs },
             korean:  { name: "Korean Praise", songs: koreanSongs },
-            chinese: { name: "Chinese Praise", songs: chineseSongs }
+            chinese: { name: "Chinese Praise", songs: chineseSongs },
+            choppedScrewed: { name: "Chopped & Screwed", songs: choppedScrewedSongs }
         };
 
         // ============================================================
