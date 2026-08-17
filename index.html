@@ -1265,8 +1265,14 @@
         // etc.) fire 'error' on the element itself, not just play()'s
         // promise — without this listener those failures left the UI
         // stuck showing "playing" with no sound and no way to recover.
+        // NOTE: switching tracks (audio.load() with a new src) also fires
+        // this event as a normal side effect of aborting the previous
+        // load — that case carries error code 1 (MEDIA_ERR_ABORTED) and
+        // must be ignored, or every ordinary track switch would falsely
+        // report a failure.
         audio.addEventListener('error', function() {
             if (!audio.src) return;
+            if (audio.error && audio.error.code === 1 /* MEDIA_ERR_ABORTED */) return;
             console.warn('Audio element error:', audio.error);
             isPlaying = false;
             playPauseBtn.innerHTML = "▶️";
