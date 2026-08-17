@@ -1209,21 +1209,32 @@
         // Wraps audio.play() so a failure (network hiccup, CDN throttling,
         // autoplay block, bad file, etc.) always resets the UI instead of
         // leaving it stuck showing "playing" while nothing is happening.
-        function attemptPlay() {
+        // GitHub's file CDN occasionally throws a transient error under
+        // load, so a failed attempt gets a couple of automatic retries
+        // (fresh reload + replay) before it's shown to the user as broken.
+        function attemptPlay(retriesLeft) {
+            if (retriesLeft === undefined) retriesLeft = 2;
             const requestedSrc = audio.src;
             return audio.play().then(function() {
                 isPlaying = true;
                 playPauseBtn.innerHTML = "⏸️";
             }).catch(function(err) {
-                console.warn('Playback error:', err);
-                // Only reset state if this failure belongs to the track
-                // that's still loaded (avoids clobbering a newer, already-
+                console.warn('Playback error:', err, '— retries left:', retriesLeft);
+                // Only act if this failure belongs to the track that's
+                // still loaded (avoids clobbering a newer, already-
                 // succeeding play request from a fast follow-up click).
-                if (audio.src === requestedSrc) {
-                    isPlaying = false;
-                    playPauseBtn.innerHTML = "▶️";
-                    flashLoadError();
+                if (audio.src !== requestedSrc) return;
+                if (retriesLeft > 0) {
+                    setTimeout(function() {
+                        if (audio.src !== requestedSrc) return;
+                        audio.load();
+                        attemptPlay(retriesLeft - 1);
+                    }, 900);
+                    return;
                 }
+                isPlaying = false;
+                playPauseBtn.innerHTML = "▶️";
+                flashLoadError();
             });
         }
 
@@ -1281,9 +1292,14 @@
                 if (!audio.paused) return;                 // it's playing — false alarm
                 if (audio.readyState >= 2) return;          // has usable data — recovering fine
                 console.warn('Audio element error:', audio.error);
-                isPlaying = false;
-                playPauseBtn.innerHTML = "▶️";
-                flashLoadError();
+                if (isPlaying) {
+                    // Was mid-playback (e.g. dropped mid-song) — try to
+                    // recover automatically instead of failing right away.
+                    attemptPlay();
+                } else {
+                    playPauseBtn.innerHTML = "▶️";
+                    flashLoadError();
+                }
             }, 600);
         });
 
