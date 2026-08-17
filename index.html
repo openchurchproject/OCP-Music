@@ -1193,7 +1193,7 @@
             audio.addEventListener('loadedmetadata', onMetadataLoaded, { once: true });
 
             if (isPlaying) {
-                audio.play().catch(function(e) { console.warn('Playback error:', e); });
+                attemptPlay();
             }
             if (updateUrl !== false) {
                 updateUrlState(currentGenre, currentIndex);
@@ -1206,14 +1206,40 @@
             progressSlider.max = audio.duration;
         }
 
+        // Wraps audio.play() so a failure (network hiccup, CDN throttling,
+        // autoplay block, bad file, etc.) always resets the UI instead of
+        // leaving it stuck showing "playing" while nothing is happening.
+        function attemptPlay() {
+            const requestedSrc = audio.src;
+            return audio.play().then(function() {
+                isPlaying = true;
+                playPauseBtn.innerHTML = "⏸️";
+            }).catch(function(err) {
+                console.warn('Playback error:', err);
+                // Only reset state if this failure belongs to the track
+                // that's still loaded (avoids clobbering a newer, already-
+                // succeeding play request from a fast follow-up click).
+                if (audio.src === requestedSrc) {
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = "▶️";
+                    flashLoadError();
+                }
+            });
+        }
+
+        function flashLoadError() {
+            const original = currentTrackLabel.innerText;
+            currentTrackLabel.innerText = "⚠️ Couldn't load — tap play to retry";
+            setTimeout(function() {
+                if (currentTrackLabel.innerText.indexOf("Couldn't load") !== -1) {
+                    currentTrackLabel.innerText = original;
+                }
+            }, 3000);
+        }
+
         function togglePlayPause() {
             if (audio.paused) {
-                audio.play().then(function() {
-                    isPlaying = true;
-                    playPauseBtn.innerHTML = "⏸️";
-                }).catch(function(err) {
-                    console.warn('Autoplay blocked?', err);
-                });
+                attemptPlay();
             } else {
                 audio.pause();
                 isPlaying = false;
@@ -1226,7 +1252,6 @@
             if (next >= songsData.length) next = 0;
             currentIndex = next;
             loadSong(currentIndex, true);
-            if (isPlaying) audio.play().catch(function(e) { console.log(e); });
         }
 
         function prevTrack() {
@@ -1234,8 +1259,19 @@
             if (prev < 0) prev = songsData.length - 1;
             currentIndex = prev;
             loadSong(currentIndex, true);
-            if (isPlaying) audio.play().catch(function(e) { console.log(e); });
         }
+
+        // Media-level failures (404, throttled CDN, decode error, offline,
+        // etc.) fire 'error' on the element itself, not just play()'s
+        // promise — without this listener those failures left the UI
+        // stuck showing "playing" with no sound and no way to recover.
+        audio.addEventListener('error', function() {
+            if (!audio.src) return;
+            console.warn('Audio element error:', audio.error);
+            isPlaying = false;
+            playPauseBtn.innerHTML = "▶️";
+            flashLoadError();
+        });
 
         function updateActiveCard() {
             const cards = document.querySelectorAll('.song-card');
@@ -1278,16 +1314,8 @@
                         return;
                     }
                     currentIndex = idx;
+                    isPlaying = true;
                     loadSong(currentIndex, true);
-                    if (audio.paused) {
-                        audio.play().then(function() {
-                            isPlaying = true;
-                            playPauseBtn.innerHTML = "⏸️";
-                        }).catch(function() {});
-                    } else {
-                        isPlaying = true;
-                        playPauseBtn.innerHTML = "⏸️";
-                    }
                 });
                 const copyBtn = card.querySelector('.copy-song-btn');
                 copyBtn.addEventListener('click', function(e) {
@@ -1338,10 +1366,8 @@
             updateUrlState(currentGenre, currentIndex);
 
             if (wasPlaying) {
-                audio.play().then(function() {
-                    isPlaying = true;
-                    playPauseBtn.innerHTML = "⏸️";
-                }).catch(function() {});
+                isPlaying = true;
+                attemptPlay();
             }
 
             updateShareHint();
@@ -1376,7 +1402,7 @@
                 });
                 updateShareHint();
                 if (isPlaying) {
-                    audio.play().catch(function() {});
+                    attemptPlay();
                 }
             } else {
                 // Ensure URL is consistent
